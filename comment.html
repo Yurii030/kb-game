@@ -7,71 +7,21 @@
     <title>고래의 바다구하기</title>
 </head>
 <body>
-    "use strict"
-
-    const commentInput = document.getElementsByClassName('post')[0];
-    const submit = document.getElementsByClassName('submit')[0];
-    
-    /* ---------------------------------------- */
-    /* 버튼 활성화 */
-    /* ---------------------------------------- */
-    
-    commentInput.addEventListener('keyup',submitBtn);
-    
-    function submitBtn(){
-        commentInput.value.length !== 0 ? 
-        submit.disabled = false : submit.disabled = true;
-    }
-    
-    /* ---------------------------------------- */
-    /* 댓글 생성 */
-    /* ---------------------------------------- */
-    
-    function enterComment() {
-        const [comments] = document.getElementsByClassName('comments');
-        const newComment = document.createElement('li');
-        const comment = `
-        <b>dltjsgho</b> 
-        ${commentInput.value} 
-        <span class="commentLikes"></span>
-        <span class="deleted">x</span>
-        `; 
-    
-        newComment.innerHTML = comment
-        comments.appendChild(newComment);
-        commentInput.value= '';
-    
-    /* ---------------------------------------- */
-    /* heart생성 */
-    /* ---------------------------------------- */
-        const overSizeHeart = newComment.querySelector('.commentLikes');
-        const heartIcon = document.createElement("img");
-    
-        overSizeHeart.appendChild(heartIcon)
-        heartIcon.setAttribute("src", "../img/heart.png");
-        
-    /* ---------------------------------------- */
-    /* 댓글 삭제 */
-    /* ---------------------------------------- */
-        const deleteTxt = newComment.querySelector('.deleted');
-    
-        deleteTxt.addEventListener('click', () => {
-            newComment.remove();
-        })
-    }
-    
-    commentInput.addEventListener('keyup',function(e){
-        if(e.code === 'Enter' && commentInput.value.length > 0) {
-            enterComment();
-        }
-        submitBtn();
-    })
-    
-    submit.addEventListener('click',()=>{
-        if(commentInput.value.length > 0) {
-            enterComment();
-        }
-        submitBtn()
-    }) 
+	<%
+		String c_id = null;
+		if(session.getAttribute("id") != null){
+			c_id = (String)session.getAttribute("id");
+		}
+	%>
+	
+	<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
+		<form method="post" action="commentInsert.jsp">
+			<tr>
+				<td style="border-bottom:none;" valign="middle"><input type="hidden" name="cid" value="<%=c_id%>"><br><br><%=c_id%></td>
+				<td><input type="text" style="height:100px;" class="form-control" placeholder="상대방을 존중하는 댓글을 남깁시다." name = "comment"></td>
+				<td><br><br><input type="submit" class="btn-primary pull" value="댓글 작성"></td>
+			</tr>
+		</form>
+	</table>
 </body>
 </html>
