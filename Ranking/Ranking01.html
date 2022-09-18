@@ -1,0 +1,45 @@
+<%@page import=""%>
+<%@page import="java.sql.*"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+
+<% 
+
+String SQL ="SELECT r_id, my_score, @RANK := @RANK + 1 AS total_rank FROM ranking,
+(SELECT @RANK := 0) R
+ORDER BY total_rank DESC;"  
+
+Connection conn = null
+preparedstatement pstmt = conn.preparestatement(sql)
+resultset rs = pstmt.executequery()
+
+%>
+
+
+
+<title>쿼리불러오기</title>
+</head>
+<body>
+
+  <table>
+     <tr>
+        <th>아이디</th>
+        <th>점수</th>
+        <th>종합랭크</th>
+        <th>나의랭크</th>
+     </tr>
+     <%while(rs.next()){ %>
+     <tr>
+       <td><%=rs.getString(1) %></td>
+       <td><%=rs.getInt(2) %></td>
+       <td><%=rs.getInt(3) %></td>
+       <td><%=rs.getInt(4) %></td>
+     </tr>
+     <% } %>       
+ 
+ </table>
+
+</body>
+</html>
